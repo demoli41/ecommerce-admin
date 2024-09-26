@@ -3,15 +3,17 @@ import GoogleProvider from 'next-auth/providers/google'
 import {MongoDBAdapter} from "@next-auth/mongodb-adapter";
 import clientPromise from "@/lib/mongodb";
 import {Admin} from "@/models/Admin";
+import {mongooseConnect} from "@/lib/mongoose";
 
 
 async function isAdminEmail(email){
+    mongooseConnect();
     return true;
     return !! (await Admin.find({email}));
 }
 
 export const authOptions={
-
+    secret: process.env.SECRET,
     providers: [
 
         GoogleProvider({
